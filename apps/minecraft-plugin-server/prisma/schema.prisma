@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Password {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  value     String?
+  player    Player?  @relation(fields: [playerId], references: [id])
+  playerId  String?
+}
+
+model Player {
+  id            String     @id @default(cuid())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  username      String?
+  hasPermission Boolean?
+  passwords     Password[]
+}
